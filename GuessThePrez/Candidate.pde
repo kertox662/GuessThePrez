@@ -2,7 +2,6 @@ class Candidate{
     
     String name;
     PImage portrait;
-    boolean t; 
     
     Candidate(String name){
          this.name = name;
