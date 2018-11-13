@@ -24,4 +24,7 @@ class Question{
     }
     
     
+    //static Question getNextQuestion(){}
+    
+    
 }

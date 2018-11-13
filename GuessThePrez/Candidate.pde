@@ -16,3 +16,7 @@ class Candidate{
         return null;
     }
 }
+
+boolean checkRemainingCandidates(){
+    return true;
+}

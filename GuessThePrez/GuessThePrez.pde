@@ -1,12 +1,19 @@
 import g4p_controls.*;
 import java.awt.Font;
 
+color[] usColors = {color(255, 0, 0), color(255), color(0, 0, 255)};
+color[] canadaColors = {color(255), color(255, 0, 0)};
+String title = "Guess The Prez!";
+int curColor = 0;
+int curTitleIndex = 0;
+
 Candidate[] masterCandidates;
 ArrayList<Candidate> currentCandidates;
 
 Question[] masterQuestions;
 PImage[] portraits;
 PImage cross;
+
 
 boolean isLoading = true;
 int loaded = 0, loadMax = 0;
@@ -15,6 +22,11 @@ String curLoadProcess = "Loading";
 boolean playAgain = true;
 
 Question currentQuestion;
+
+final int padX = 80, padY = 105;
+final int xOff = 40, yOff = 98;
+
+
 
 void setup() {
     size(660, 750);
@@ -36,26 +48,19 @@ void setup() {
 }
 
 void draw() {
-
     if (isLoading) {
-        background(255);
-        fill(255);
-        rect(100, height/2 - 25, width - 200, 50);
-        fill(255, 0, 0);
-        rect(100, height/2 - 25, (width - 200) * ((float)loaded / loadMax), 50);
-        textSize(20);
-        text("Loading, Please Wait...", width/2, height/2 - 50);
-        textSize(12);
-        text(curLoadProcess, width/2, height/2 + 50 );
+        drawLoading();
     } else {
         fill(0);
         textSize(10);
         textLeading(10);
-        
-        background(255);
+
+        background(127);
         drawPortraits();
 
         coverAffected(2);
+        
+        drawTitle(width/2, 35);
         
         if (!playAgain) {
             noLoop();
@@ -65,8 +70,8 @@ void draw() {
 
 void drawPortraits() {
     for (int i=0; i<currentCandidates.size(); i++) {
-        image(currentCandidates.get(i).portrait, i%8*80+40, int(i/8)*105+48);
-        text(currentCandidates.get(i).name, i%8*80+10, int(i/8)*105+85, 60, 1000);
+        image(currentCandidates.get(i).portrait, i%8*padX+xOff, int(i/8)*padY+yOff);
+        text(currentCandidates.get(i).name, i%8*padX+xOff - 30, int(i/8)*padY+yOff + 37, 60, 1000);
     }
 }
 
@@ -111,7 +116,7 @@ void loadData() {
     portraits = loadPortraits(masterCandidates);
 
     currentQuestion = masterQuestions[0];
-    
+
     isLoading = false;
 }
 
@@ -147,6 +152,37 @@ void coverAffected(int toCover) {
     boolean boolCover = (toCover == 1)?false:true;
     for (int i = 0; i < currentCandidates.size(); i++) {
         if (currentQuestion.answers.get(i) == boolCover)
-            image(cross, i%8*80+40, int(i/8)*105+48);
+            image(cross, i%8*padX+xOff, int(i/8)*padY+yOff);
     }
+}
+
+void drawTitle(int cX, int y) {
+    textSize(30);
+    char[] titleChars = title.toCharArray();
+    float x = cX - textWidth(title)/2;
+    for (int i = 0; i < titleChars.length; i++) {
+        if(i < curTitleIndex)
+            fill(usColors[(curColor + 1)%usColors.length]);
+        else
+            fill(usColors[curColor]);
+        text(str(titleChars[i]), x, y);
+        x += textWidth(str(titleChars[i]));
+    }
+    if(curTitleIndex == title.length() - 1){
+        curColor = ++curColor % usColors.length;
+        curTitleIndex = 0;
+    }
+    curTitleIndex++;
+}
+
+void drawLoading() {
+    background(255);
+    fill(255);
+    rect(100, height/2 - 25, width - 200, 50);
+    fill(255, 0, 0);
+    rect(100, height/2 - 25, (width - 200) * ((float)loaded / loadMax), 50);
+    textSize(20);
+    text("Loading, Please Wait...", width/2, height/2 - 50);
+    textSize(12);
+    text(curLoadProcess, width/2, height/2 + 50 );
 }
