@@ -25,7 +25,7 @@ void setup() {
     textSize(10);
     textLeading(10);
     stroke(0);
-    strokeWeight(4);
+    strokeWeight(2);
 
     currentCandidates = new ArrayList<Candidate>();
 
@@ -50,10 +50,13 @@ void draw() {
     } else {
         fill(0);
         textSize(10);
+        textLeading(10);
         
         background(255);
         drawPortraits();
 
+        coverAffected(2);
+        
         if (!playAgain) {
             noLoop();
         }
@@ -96,7 +99,7 @@ void loadData() {
     curLoadProcess = "Loading - Questions";
     for (int i = 1; i < topRow.length; i++) {
         ArrayList<Boolean> answers = new ArrayList<Boolean>();
-        for (int j = 1; j < masterCandidates.length; j++) {
+        for (int j = 1; j < file.length; j++) {
             answers.add(boolean(file[j].split(",")[i]));
         }
         masterQuestions[i-1] = new Question(topRow[i], answers);
@@ -107,6 +110,7 @@ void loadData() {
 
     portraits = loadPortraits(masterCandidates);
 
+    currentQuestion = masterQuestions[0];
     
     isLoading = false;
 }
@@ -143,6 +147,6 @@ void coverAffected(int toCover) {
     boolean boolCover = (toCover == 1)?false:true;
     for (int i = 0; i < currentCandidates.size(); i++) {
         if (currentQuestion.answers.get(i) == boolCover)
-            image(cross, i%8*80+40, int(i/8)*95+48);
+            image(cross, i%8*80+40, int(i/8)*105+48);
     }
 }

@@ -12,5 +12,16 @@ class Question{
         return null;
     }
     
+    int getDifferenceInResults(){
+        int numTrue = 0, numFalse = 0;
+        for(int i = 0; i < answers.size(); i++){
+            if(answers.get(i))
+                numTrue++;
+            else
+                numFalse++;
+        }
+        return abs(numTrue - numFalse);
+    }
+    
     
 }
