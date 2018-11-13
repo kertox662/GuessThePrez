@@ -5,7 +5,6 @@ PImage[] portraits;
 boolean playAgain;
 Question[] questions;
 String[] topRow;
-String currentQuestion, finalCandidate; 
 
 int temp = 0;
 
@@ -17,23 +16,17 @@ void setup() {
     portraits = loadPortraits(candidates);  
     
     while (playAgain) {
-        
+      
       
     }
-}  
+
+
+}
 
 void draw() {
     background(255);
     image(portraits[temp], width/2, height/2);
 }
-
-//void respondToQuestion() {
-//  if (displayOutcomes == true) {
-//    if (buttonPressed = 0) {
-//      currentQuestions
-//    } 
-//  }
-//} 
 
 void loadData(){
     String[] file = loadStrings("President_Data.csv");
@@ -58,12 +51,9 @@ void keyPressed() {
     }
 }
 
-//void getHoveredButton() {
-//  int hoverButton; 
-
-//  if (mouseX > gui_Win.mouseX, gui_Win.mouseY
+void getHoveredButton() {
   
-//} 
+} 
 
 PImage[] loadPortraits(Candidate[] c) {
     PImage[] images = new PImage[c.length];
