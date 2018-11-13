@@ -1,6 +1,9 @@
 import g4p_controls.*;
 
-Candidate[] candidates;
+Candidate[] masterCandidates;
+ArrayList<Candidate> currentCandidates;
+
+Question[] questions;
 PImage[] portraits;
 
 int temp = 0;
