@@ -17,6 +17,14 @@ class Candidate{
     }
 }
 
-boolean checkRemainingCandidates(){
-    return true;
+void setCurrentCandidates(Candidate[] candidates) {
+    currentCandidates.clear();
+    for (Candidate c : candidates)
+        currentCandidates.add(c);
 }
+
+boolean isAnswerFound(){
+    return currentCandidates.size() == 1;
+}
+
+void undoCandidates(){}

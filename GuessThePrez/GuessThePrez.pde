@@ -18,15 +18,17 @@ boolean playAgain = true;
 
 Question currentQuestion;
 
-boolean showSelected;
+boolean showSelected = true;
 String [] modes = {"American", "Canadian"};
 String curMode = modes[0];
 
 color[] usColors = {color(255, 0, 0), color(255), color(0, 0, 255)};
-color[] canadaColors = {color(255), color(255, 0, 0)};
+color[] canadaColors = { color(255, 0, 0), color(255)};
 String title = "Guess The Prez!";
 int curColor = 0;
 int curTitleIndex = 0;
+int animSpeed = 10;
+boolean playAnim = true;
 
 final int padX = 80, padY = 105;
 final int xOff = 40, yOff = 98;
@@ -49,9 +51,7 @@ void setup() {
     fill(0);
 
     thread("loadData");
-    createGUI();
     
-    modeDropList.setItems(modes, 0);
 }
 
 void draw() {
@@ -65,14 +65,18 @@ void draw() {
         background(127);
         drawPortraits();
 
-        coverAffected(2);
-        
+        if (showSelected)
+            coverAffected(1);
+
         drawTitle(width/2, 35);
-        
+
         if (!playAgain) {
             noLoop();
         }
     }
+}
+
+void reset() {
 }
 
 void drawPortraits() {
@@ -125,6 +129,12 @@ void loadData() {
     currentQuestion = masterQuestions[0];
 
     isLoading = false;
+    
+    createGUI();
+
+    modeDropList.setItems(modes, 0);
+    
+    getNextQuestion();
 }
 
 PImage[] loadPortraits(Candidate[] c) {
@@ -142,18 +152,6 @@ PImage[] loadPortraits(Candidate[] c) {
     return images;
 }
 
-
-
-
-
-
-
-void setCurrentCandidates(Candidate[] candidates) {
-    currentCandidates.clear();
-    for (Candidate c : candidates)
-        currentCandidates.add(c);
-}
-
 void coverAffected(int toCover) {
     if (toCover == 0) return;
     boolean boolCover = (toCover == 1)?false:true;
@@ -165,21 +163,33 @@ void coverAffected(int toCover) {
 
 void drawTitle(int cX, int y) {
     textSize(30);
+    if (animSpeed == 0 || !playAnim) {
+        fill(usColors[0]);
+        text(title, cX, y);
+        return;
+    }
+
     char[] titleChars = title.toCharArray();
     float x = cX - textWidth(title)/2;
     for (int i = 0; i < titleChars.length; i++) {
-        if(i < curTitleIndex)
+        if (i < curTitleIndex) {
             fill(usColors[(curColor + 1)%usColors.length]);
-        else
+        } else {
             fill(usColors[curColor]);
+        }
         text(str(titleChars[i]), x, y);
         x += textWidth(str(titleChars[i]));
     }
-    if(curTitleIndex == title.length() - 1){
+
+
+    if (title.charAt(curTitleIndex) == ' ')
+        curTitleIndex++;
+
+    if (curTitleIndex >= title.length() - 1) {
         curColor = ++curColor % usColors.length;
         curTitleIndex = 0;
     }
-    if(frameCount%3 == 0)
+    if (frameCount%animSpeed == 0)
         curTitleIndex++;
 }
 
@@ -193,4 +203,8 @@ void drawLoading() {
     text("Loading, Please Wait...", width/2, height/2 - 50);
     textSize(12);
     text(curLoadProcess, width/2, height/2 + 50 );
+}
+
+void updateGuiQuestion() {
+    questionLabel.setText("Question: " + currentQuestion.text);
 }
