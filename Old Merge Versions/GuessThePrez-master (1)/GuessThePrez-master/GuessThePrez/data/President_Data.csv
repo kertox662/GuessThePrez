@@ -1,0 +1,45 @@
+President,Is he a Republican?,Is he a Democrat?,Did he die in office?,Is he a free mason?,Is he on US currency?,Did he only serve 1 term?,Is he a Founding Father?,Is he Dead?,Is he on Mount Rushmore?,Was he a Vice President?,Does he have military background?,Are there other presidents with same last name?,Was he governor before becoming president?,Were the 48 mainland states part of the U.S. at the start of their first term?,Was he an even-numbered president?
+George Washington,false,false,false,true,true,false,true,true,true,false,true,false,false,false,false
+John Adams,false,false,false,false,false,true,true,true,false,true,false,true,false,false,true
+Thomas Jefferson,false,false,false,false,true,false,true,true,true,true,true,false,true,false,false
+James Madison,false,false,false,false,true,false,true,true,false,false,true,false,false,false,true
+James Monroe,false,false,false,true,false,false,false,true,false,false,true,false,true,false,false
+John Quincy Adams,false,false,false,false,false,true,false,true,false,false,false,true,false,false,true
+Andrew Jackson,false,true,false,true,true,false,false,true,false,false,true,false,false,false,false
+Martin Van Buren,false,true,false,false,false,true,false,true,false,false,false,false,true,false,true
+William Henry Harrison,false,false,true,false,false,true,false,true,false,false,true,true,false,false,false
+John Tyler,false,false,false,false,false,true,false,true,false,true,true,false,true,false,true
+James K. Polk,false,true,false,true,false,true,false,true,false,false,true,false,true,false,false
+Zachary Taylor,false,false,true,false,false,true,false,true,false,false,true,false,false,false,true
+Millard Fillmore,false,false,false,false,false,true,false,true,false,true,true,false,false,false,false
+Franklin Pierce,false,true,false,false,false,true,false,true,false,false,true,false,false,false,true
+James Buchanan,false,true,false,true,false,true,false,true,false,false,true,false,false,false,false
+Abraham Lincoln,true,false,true,false,true,false,false,true,true,false,true,false,false,false,true
+Andrew Johnson,false,true,false,true,false,true,false,true,false,true,true,true,true,false,false
+Ulysses S. Grant,true,false,false,false,true,false,false,true,false,false,true,false,false,false,true
+Rutherford B. Hayes,true,false,false,false,false,true,false,true,false,false,true,false,true,false,false
+James A. Garfield,true,false,true,true,false,true,false,true,false,false,true,false,false,false,true
+Chester A. Arthur,true,false,false,false,false,true,false,true,false,true,true,false,false,false,false
+Grover Cleveland,false,true,false,false,true,false,false,true,false,false,false,false,true,false,true
+Benjamin Harrison,true,false,false,false,false,true,false,true,false,false,true,true,false,false,false
+William McKinley,true,false,true,true,true,false,false,true,false,false,true,false,true,false,false
+Theodore Roosevelt,true,false,false,true,false,false,false,true,true,true,true,true,true,false,true
+William Howard Taft,true,false,false,true,false,true,false,true,false,false,true,false,false,false,false
+Woodrow Wilson,false,true,false,false,true,false,false,true,false,false,false,false,true,true,true
+Warren G. Harding,true,false,true,true,false,true,false,true,false,false,false,false,false,true,false
+Calvin Coolidge,true,false,false,false,false,false,false,true,false,false,false,false,true,true,true
+Herbert Hoover,true,false,false,false,false,false,false,true,false,false,false,false,false,true,false
+Franklin D. Roosevelt,false,true,true,true,true,false,false,true,false,false,false,true,true,true,true
+Harry S. Truman,false,true,false,true,false,false,false,true,false,true,true,false,false,true,false
+Dwight D. Eisenhower,true,false,false,false,false,false,false,true,false,false,true,false,false,true,true
+John F. Kennedy,false,true,true,false,true,true,false,true,false,false,true,false,false,true,false
+Lyndon B. Johnson,false,true,false,false,false,false,false,true,false,false,true,true,false,true,true
+Richard Nixon,true,false,false,false,false,false,false,true,false,true,true,false,false,true,false
+Gerald Ford,true,false,false,true,false,true,false,true,false,false,true,false,false,true,true
+Jimmy Carter,false,true,false,false,false,true,false,false,false,false,true,false,true,true,false
+Ronald Reagan,true,false,false,false,false,false,false,true,false,false,true,false,true,true,true
+George H. W. Bush,true,false,false,false,false,true,false,false,false,true,true,true,false,true,false
+Bill Clinton,false,true,false,false,false,false,false,false,false,false,false,false,true,true,true
+George W. Bush,true,false,false,false,false,false,false,false,false,false,true,true,true,true,false
+Barack Obama,false,true,false,false,false,false,false,false,false,false,false,false,false,true,true
+Donald Trump,true,false,false,false,false,true,false,false,false,false,false,false,false,true,false

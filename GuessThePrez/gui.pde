@@ -19,28 +19,32 @@ synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:windo
 } //_CODE_:window1:679824:
 
 public void clickYes(GButton source, GEvent event) { //_CODE_:yesButton:682798:
-  println("yesButton - GButton >> GEvent." + event + " @ " + millis());
+  respondToQuestion(true);
+  getNextQuestion();
 } //_CODE_:yesButton:682798:
 
 public void clickNo(GButton source, GEvent event) { //_CODE_:noButton:464313:
-  println("noButton - GButton >> GEvent." + event + " @ " + millis());
+  respondToQuestion(false);
+  getNextQuestion();
 } //_CODE_:noButton:464313:
 
 public void PreviousQuestion(GButton source, GEvent event) { //_CODE_:previousButton:565747:
-  println("previousButton - GButton >> GEvent." + event + " @ " + millis());
+  undoCandidates();
+  getNextQuestion();
 } //_CODE_:previousButton:565747:
 
 public void toggleDisplayEffects(GCheckbox source, GEvent event) { //_CODE_:showEffectBox:597986:
-  println("showEffectBox - GCheckbox >> GEvent." + event + " @ " + millis());
+  showSelected=showEffectBox.isSelected() ;
 } //_CODE_:showEffectBox:597986:
 
-public void dropList1_click1(GDropList source, GEvent event) { //_CODE_:candidateOptions:301457:
-  println("candidateOptions - GDropList >> GEvent." + event + " @ " + millis());
-} //_CODE_:candidateOptions:301457:
-
 public void selectMode(GDropList source, GEvent event) { //_CODE_:modeDropList:585678:
-  println("modeDropList - GDropList >> GEvent." + event + " @ " + millis());
+  curMode = source.getSelectedText();
+  
 } //_CODE_:modeDropList:585678:
+
+public void clickReset(GButton source, GEvent event) { //_CODE_:ResetButton:688049:
+  reset();
+} //_CODE_:ResetButton:688049:
 
 
 
@@ -51,7 +55,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "Window title", 0, 0, 400, 240, JAVA2D);
+  window1 = GWindow.getWindow(this, "Window title", 0, 0, 400, 400, JAVA2D);
   window1.noLoop();
   window1.addDrawHandler(this, "win_draw1");
   yesButton = new GButton(window1, 80, 95, 80, 30);
@@ -72,17 +76,18 @@ public void createGUI(){
   questionLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   questionLabel.setText("Question:");
   questionLabel.setOpaque(false);
-  showEffectBox = new GCheckbox(window1, 80, 165, 160, 20);
+  showEffectBox = new GCheckbox(window1, 80, 167, 160, 20);
   showEffectBox.setIconAlign(GAlign.LEFT, GAlign.MIDDLE);
   showEffectBox.setText("Show Effects of Answers?");
   showEffectBox.setOpaque(false);
   showEffectBox.addEventHandler(this, "toggleDisplayEffects");
-  candidateOptions = new GDropList(window1, 250, 139, 90, 80, 3);
-  candidateOptions.setItems(loadStrings("list_301457"), 0);
-  candidateOptions.addEventHandler(this, "dropList1_click1");
-  modeDropList = new GDropList(window1, 250, 165, 90, 76, 3);
+  showEffectBox.setSelected(true);
+  modeDropList = new GDropList(window1, 250, 165, 90, 57, 2);
   modeDropList.setItems(loadStrings("list_585678"), 0);
   modeDropList.addEventHandler(this, "selectMode");
+  ResetButton = new GButton(window1, 80, 225, 80, 30);
+  ResetButton.setText("Restart");
+  ResetButton.addEventHandler(this, "clickReset");
   window1.loop();
 }
 
@@ -95,5 +100,5 @@ GButton previousButton;
 GLabel titleLabel; 
 GLabel questionLabel; 
 GCheckbox showEffectBox; 
-GDropList candidateOptions; 
 GDropList modeDropList; 
+GButton ResetButton; 

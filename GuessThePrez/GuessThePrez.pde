@@ -1,16 +1,11 @@
 import g4p_controls.*;
 import java.awt.Font;
 
-color[] usColors = {color(255, 0, 0), color(255), color(0, 0, 255)};
-color[] canadaColors = {color(255), color(255, 0, 0)};
-String title = "Guess The Prez!";
-int curColor = 0;
-int curTitleIndex = 0;
 
 Candidate[] masterCandidates;
 ArrayList<Candidate> currentCandidates;
-
 Question[] masterQuestions;
+
 PImage[] portraits;
 PImage cross;
 
@@ -22,6 +17,16 @@ String curLoadProcess = "Loading";
 boolean playAgain = true;
 
 Question currentQuestion;
+
+boolean showSelected;
+String [] modes = {"American", "Canadian"};
+String curMode = modes[0];
+
+color[] usColors = {color(255, 0, 0), color(255), color(0, 0, 255)};
+color[] canadaColors = {color(255), color(255, 0, 0)};
+String title = "Guess The Prez!";
+int curColor = 0;
+int curTitleIndex = 0;
 
 final int padX = 80, padY = 105;
 final int xOff = 40, yOff = 98;
@@ -45,6 +50,8 @@ void setup() {
 
     thread("loadData");
     createGUI();
+    
+    modeDropList.setItems(modes, 0);
 }
 
 void draw() {
@@ -172,7 +179,8 @@ void drawTitle(int cX, int y) {
         curColor = ++curColor % usColors.length;
         curTitleIndex = 0;
     }
-    curTitleIndex++;
+    if(frameCount%3 == 0)
+        curTitleIndex++;
 }
 
 void drawLoading() {
