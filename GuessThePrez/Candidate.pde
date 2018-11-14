@@ -3,7 +3,7 @@ class Candidate {
     String name;
     PImage portrait;
     
-    Candidate(String name){
+    Candidate(String name) {
       this.name = name;
       this.portrait = null;
     }
