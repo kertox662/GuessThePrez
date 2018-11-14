@@ -4,7 +4,8 @@ import java.awt.Font;
 
 Candidate[] masterCandidates;
 ArrayList<Candidate> currentCandidates;
-Question[] masterQuestions;
+ArrayList<Candidate> undoCandidateClipboard;
+Question[] questions;
 
 PImage[] portraits;
 PImage cross;
@@ -47,6 +48,8 @@ void setup() {
     strokeWeight(2);
 
     currentCandidates = new ArrayList<Candidate>();
+    undoCandidateClipboard = new ArrayList<Candidate>();
+    
 
     fill(0);
 
@@ -104,7 +107,7 @@ void loadData() {
     loaded++;
 
     masterCandidates = new Candidate[file.length-1];
-    masterQuestions = new Question[file[0].split(",").length - 1];
+    questions = new Question[file[0].split(",").length - 1];
 
     curLoadProcess = "Loading - Candidates";
     for (int i = 1; i < file.length; i++) {
@@ -118,7 +121,7 @@ void loadData() {
         for (int j = 1; j < file.length; j++) {
             answers.add(boolean(file[j].split(",")[i]));
         }
-        masterQuestions[i-1] = new Question(topRow[i], answers);
+        questions[i-1] = new Question(topRow[i], answers);
         loaded++;
     }
 
@@ -126,7 +129,7 @@ void loadData() {
 
     portraits = loadPortraits(masterCandidates);
 
-    currentQuestion = masterQuestions[0];
+    currentQuestion = questions[0];
 
     isLoading = false;
     

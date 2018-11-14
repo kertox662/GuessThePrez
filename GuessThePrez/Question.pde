@@ -40,12 +40,12 @@ class Question{
 
 void getNextQuestion(){
     int minDiff = masterCandidates.length + 1;
-    for(Question q : masterQuestions){
+    for(Question q : questions){
         minDiff = min(q.getDifferenceInResults(), minDiff);
         //println(q.getDifferenceInResults());
     }
     
-    for(Question q: masterQuestions){
+    for(Question q: questions){
         if(q.getDifferenceInResults() == minDiff){
             currentQuestion = q;
             break;}
@@ -55,11 +55,13 @@ void getNextQuestion(){
 }
 
 void respondToQuestion(boolean response){
+    undoCandidateClipboard.clear();
     for(int i = currentCandidates.size() - 1; i >= 0; i--){
         if(currentQuestion.answers.get(i) != response){
+            undoCandidateClipboard.add(currentCandidates.get(i));
             currentCandidates.remove(i);
-            for(int j = 0; j < masterQuestions.length; j++)
-                masterQuestions[j].answers.remove(i);
+            for(int j = 0; j < questions.length; j++)
+                questions[j].answers.remove(i);
         }
     }
     getNextQuestion();
