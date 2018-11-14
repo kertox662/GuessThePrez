@@ -71,8 +71,8 @@ void draw() {
         background(127);
         drawPortraits();
 
-        if (showSelected)
-            coverAffected(1);
+        //if (showSelected)
+        //    coverAffected(getHovered());
 
         drawTitle(width/2, 35);
 
@@ -214,6 +214,7 @@ void updateGuiQuestion() {
 }
 
 int getHovered(){
+    if(yesButton == null || noButton == null) return 0;
     if(yesButton.isOver(guiWin.mouseX,guiWin.mouseY))
         return 1;
     else if(noButton.isOver(guiWin.mouseX,guiWin.mouseY))
