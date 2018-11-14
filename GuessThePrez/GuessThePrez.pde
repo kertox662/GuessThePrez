@@ -9,7 +9,6 @@ Question[] questions;
 
 PImage[] portraits;
 boolean playAgain;
-Question[] questions;
 String[] topRow;
 int buttonPressed; 
 
@@ -62,22 +61,9 @@ void setup() {
 
 void draw() {
     if (isLoading) {
-<<<<<<< HEAD
-        background(255);
-        fill(255);
-        rect(100, height/2 - 25, width - 200, 50);
-        fill(255, 0, 0);
-        rect(100, height/2 - 25, (width - 200) * ((float)loaded / loadMax), 50);
-        textSize(20);
-        text("Loading, Please Wait...", width/2, height/2 - 50);
-        textSize(12);
-        text(curLoadProcess, width/2, height/2 + 50 );
-    } 
-    else {
-=======
+
         drawLoading();
     } else {
->>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
         fill(0);
         textSize(10);
         textLeading(10);
@@ -135,13 +121,7 @@ void loadData() {
         for (int j = 1; j < file.length; j++) {
             answers.add(boolean(file[j].split(",")[i]));
         }
-<<<<<<< HEAD
-                        printArray(answers);
-                println("");
-        masterQuestions[i-1] = new Question(topRow[i], answers);
-=======
         questions[i-1] = new Question(topRow[i], answers);
->>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
         loaded++;
     }
 
@@ -152,24 +132,14 @@ void loadData() {
     currentQuestion = questions[0];
 
     isLoading = false;
-<<<<<<< HEAD
 
-=======
-    
     createGUI();
 
     modeDropList.setItems(modes, 0);
     
     getNextQuestion();
->>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
 }
 
-//void getHoveredButton() {
-//  int hoverButton; 
-
-//  if (mouseX > gui_Win.mouseX, gui_Win.mouseY
-  
-//} 
 
 PImage[] loadPortraits(Candidate[] c) {
     PImage[] images = new PImage[c.length];
@@ -186,12 +156,6 @@ PImage[] loadPortraits(Candidate[] c) {
     return images;
 }
 
-<<<<<<< HEAD
-void setCurrentCandidates(Candidate[] candidates) {
-    currentCandidates.clear();
-    for (Candidate c : candidates)
-        currentCandidates.add(c);
-=======
 void coverAffected(int toCover) {
     if (toCover == 0) return;
     boolean boolCover = (toCover == 1)?false:true;
@@ -243,7 +207,6 @@ void drawLoading() {
     text("Loading, Please Wait...", width/2, height/2 - 50);
     textSize(12);
     text(curLoadProcess, width/2, height/2 + 50 );
->>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
 }
 
 void updateGuiQuestion() {

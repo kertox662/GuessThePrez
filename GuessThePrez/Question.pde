@@ -1,10 +1,6 @@
 class Question{
     String text;
-<<<<<<< HEAD
-
-=======
     Boolean[] masterAnswers;
->>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
     ArrayList<Boolean> answers;
     
     Question(String t, ArrayList<Boolean> answers){
