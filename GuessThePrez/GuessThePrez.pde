@@ -211,3 +211,12 @@ void drawLoading() {
 void updateGuiQuestion() {
     questionLabel.setText("Question: " + currentQuestion.text);
 }
+
+int getHovered(){
+    if(yesButton.isOver(guiWin.mouseX,guiWin.mouseY))
+        return 1;
+    else if(noButton.isOver(guiWin.mouseX,guiWin.mouseY))
+        return 2;
+    else 
+        return 0;
+}
