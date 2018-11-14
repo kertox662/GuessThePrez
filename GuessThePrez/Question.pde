@@ -1,6 +1,10 @@
 class Question{
     String text;
+<<<<<<< HEAD
+
+=======
     Boolean[] masterAnswers;
+>>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
     ArrayList<Boolean> answers;
     
     Question(String t, ArrayList<Boolean> answers){
@@ -16,6 +20,28 @@ class Question{
     Question fromFile(){
         return null;
     }
+    
+    void respondToQuestion() {
+      //if (displayOutcomes) {
+      //}
+      //else {
+       //if player answers yes to the question
+        for (int i = 0; i < currentCandidates.size(); i++) {
+          if (buttonPressed == 0) {
+            if (!answers.get(i)) {
+              currentCandidates.remove(currentCandidates.get(i));
+              print(currentCandidates);
+            } 
+          if (buttonPressed == 1) {
+            if (answers.get(i)) {
+              currentCandidates.remove(currentCandidates.get(i));
+              print(currentCandidates);
+            } 
+          }
+        }    
+      } 
+      //}
+    }     
     
     int getDifferenceInResults(){
         int numTrue = 0, numFalse = 0;
