@@ -14,6 +14,7 @@
  * =========================================================
  */
 
+<<<<<<< HEAD
 synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:window1:623920:
   appc.background(230);
 } //_CODE_:window1:623920:
@@ -39,23 +40,48 @@ public void clickYes(GButton source, GEvent event) { //_CODE_:yesButton:682798:
 public void clickNo(GButton source, GEvent event) { //_CODE_:noButton:464313:
   buttonPressed = 1; 
   println("noButton - GButton >> GEvent." + event + " @ " + millis());
+=======
+synchronized public void drawGuiWin(PApplet appc, GWinData data) { //_CODE_:guiWin:679824:
+  appc.background(230);
+} //_CODE_:guiWin:679824:
+
+public void clickYes(GButton source, GEvent event) { //_CODE_:yesButton:682798:
+  respondToQuestion(true);
+  getNextQuestion();
+} //_CODE_:yesButton:682798:
+
+public void clickNo(GButton source, GEvent event) { //_CODE_:noButton:464313:
+  respondToQuestion(false);
+  getNextQuestion();
+>>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
 } //_CODE_:noButton:464313:
 
 public void PreviousQuestion(GButton source, GEvent event) { //_CODE_:previousButton:565747:
-  println("previousButton - GButton >> GEvent." + event + " @ " + millis());
+  undoCandidates();
+  getNextQuestion();
 } //_CODE_:previousButton:565747:
 
 public void toggleDisplayEffects(GCheckbox source, GEvent event) { //_CODE_:showEffectBox:597986:
-  println("showEffectBox - GCheckbox >> GEvent." + event + " @ " + millis());
+  showSelected = showEffectBox.isSelected();
 } //_CODE_:showEffectBox:597986:
 
-public void dropList1_click1(GDropList source, GEvent event) { //_CODE_:candidateOptions:301457:
-  println("candidateOptions - GDropList >> GEvent." + event + " @ " + millis());
-} //_CODE_:candidateOptions:301457:
-
 public void selectMode(GDropList source, GEvent event) { //_CODE_:modeDropList:585678:
-  println("modeDropList - GDropList >> GEvent." + event + " @ " + millis());
+  curMode = source.getSelectedText();
+  
 } //_CODE_:modeDropList:585678:
+
+public void clickReset(GButton source, GEvent event) { //_CODE_:ResetButton:688049:
+  reset();
+} //_CODE_:ResetButton:688049:
+
+public void toggleAnimateTitle(GCheckbox source, GEvent event) { //_CODE_:animateTitleCheck:211146:
+  playAnim = animateTitleCheck.isSelected();
+} //_CODE_:animateTitleCheck:211146:
+
+public void changeAnimSpeed(GSlider source, GEvent event) { //_CODE_:animSpeedSlider:955392:
+  int divisor = source.getValueI();
+  animSpeed = (divisor / 5);
+} //_CODE_:animSpeedSlider:955392:
 
 
 // Create all the GUI controls. 
@@ -65,6 +91,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   surface.setTitle("Sketch Window");
+<<<<<<< HEAD
 
   window1 = GWindow.getWindow(this, "Window title", 0, 0, 400, 300, JAVA2D);
   window1.noLoop();
@@ -80,50 +107,82 @@ public void createGUI(){
   window1.noLoop();
   window1.addDrawHandler(this, "win_draw1");
   yesButton = new GButton(window1, 80, 95, 80, 30);
+=======
+  guiWin = GWindow.getWindow(this, "Guesser_Controls", 0, 0, 400, 400, JAVA2D);
+  guiWin.noLoop();
+  guiWin.addDrawHandler(this, "drawGuiWin");
+  yesButton = new GButton(guiWin, 80, 50, 80, 30);
+>>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
   yesButton.setText("Yes");
   yesButton.addEventHandler(this, "clickYes");
-  noButton = new GButton(window1, 240, 95, 80, 30);
+  noButton = new GButton(guiWin, 240, 50, 80, 30);
   noButton.setText("No");
   noButton.addEventHandler(this, "clickNo");
-  previousButton = new GButton(window1, 80, 130, 120, 30);
+  previousButton = new GButton(guiWin, 80, 85, 120, 30);
   previousButton.setText("Correct Previous Answer");
   previousButton.addEventHandler(this, "PreviousQuestion");
-  titleLabel = new GLabel(window1, 0, 10, 400, 40);
-  titleLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  titleLabel.setText("GuessThePrez!");
-  titleLabel.setTextBold();
-  titleLabel.setOpaque(false);
-  questionLabel = new GLabel(window1, 50, 50, 300, 40);
+  questionLabel = new GLabel(guiWin, 50, 5, 300, 40);
   questionLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   questionLabel.setText("Question:");
   questionLabel.setOpaque(false);
-  showEffectBox = new GCheckbox(window1, 80, 165, 160, 20);
+  showEffectBox = new GCheckbox(guiWin, 80, 125, 160, 20);
   showEffectBox.setIconAlign(GAlign.LEFT, GAlign.MIDDLE);
   showEffectBox.setText("Show Effects of Answers?");
   showEffectBox.setOpaque(false);
   showEffectBox.addEventHandler(this, "toggleDisplayEffects");
-  candidateOptions = new GDropList(window1, 250, 139, 90, 80, 3);
-  candidateOptions.setItems(loadStrings("list_301457"), 0);
-  candidateOptions.addEventHandler(this, "dropList1_click1");
-  modeDropList = new GDropList(window1, 250, 165, 90, 76, 3);
+  showEffectBox.setSelected(true);
+  modeDropList = new GDropList(guiWin, 250, 125, 90, 57, 2);
   modeDropList.setItems(loadStrings("list_585678"), 0);
   modeDropList.addEventHandler(this, "selectMode");
+<<<<<<< HEAD
 
   window1.loop();
+=======
+  ResetButton = new GButton(guiWin, 80, 150, 80, 30);
+  ResetButton.setText("Restart");
+  ResetButton.addEventHandler(this, "clickReset");
+  animateTitleCheck = new GCheckbox(guiWin, 80, 220, 120, 20);
+  animateTitleCheck.setIconAlign(GAlign.LEFT, GAlign.MIDDLE);
+  animateTitleCheck.setText("Animate Title?");
+  animateTitleCheck.setOpaque(false);
+  animateTitleCheck.addEventHandler(this, "toggleAnimateTitle");
+  animateTitleCheck.setSelected(true);
+  animSpeedSlider = new GSlider(guiWin, 79, 250, 100, 50, 10.0);
+  animSpeedSlider.setShowValue(true);
+  animSpeedSlider.setShowLimits(true);
+  animSpeedSlider.setLimits(50, 0, 100);
+  animSpeedSlider.setNbrTicks(11);
+  animSpeedSlider.setStickToTicks(true);
+  animSpeedSlider.setShowTicks(true);
+  animSpeedSlider.setNumberFormat(G4P.INTEGER, 0);
+  animSpeedSlider.setOpaque(false);
+  animSpeedSlider.addEventHandler(this, "changeAnimSpeed");
+  animationSpeedLabel = new GLabel(guiWin, 180, 265, 140, 20);
+  animationSpeedLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  animationSpeedLabel.setText("Title Animation Speed");
+  animationSpeedLabel.setOpaque(false);
+  guiWin.loop();
+>>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
 }
 
 // Variable declarations 
 // autogenerated do not edit
+<<<<<<< HEAD
 GWindow window1;
 
 GButton button1; 
 GButton button2; 
 
+=======
+GWindow guiWin;
+>>>>>>> 2d80aa71831f1882adb9b8a98c4f5a9f680e9f10
 GButton yesButton; 
 GButton noButton; 
 GButton previousButton; 
-GLabel titleLabel; 
 GLabel questionLabel; 
 GCheckbox showEffectBox; 
-GDropList candidateOptions; 
 GDropList modeDropList; 
+GButton ResetButton; 
+GCheckbox animateTitleCheck; 
+GSlider animSpeedSlider; 
+GLabel animationSpeedLabel; 
