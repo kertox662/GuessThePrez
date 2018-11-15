@@ -8,7 +8,7 @@ ArrayList<Candidate> undoCandidateClipboard;
 Question[] questions;
 
 PImage[] portraits;
-boolean playAgain;
+boolean playAgain = true;
 String[] topRow;
 int buttonPressed; 
 
@@ -50,11 +50,12 @@ void setup() {
     strokeWeight(2);
 
     currentCandidates = new ArrayList<Candidate>();
+    undoCandidateClipboard = new ArrayList<Candidate>();
+
 
     fill(0);
 
     thread("loadData");
-    
 }
 
 void draw() {
@@ -70,15 +71,10 @@ void draw() {
         drawPortraits();
 
         if (showSelected)
-            coverAffected(1);
+            coverAffected(getHovered());
 
         drawTitle(width/2, 35);
-
-        if (!playAgain) {
-            noLoop();
-        }
     }
-    println("x");
 }
 
 void reset() {
@@ -129,14 +125,13 @@ void loadData() {
     portraits = loadPortraits(masterCandidates);
 
     currentQuestion = questions[0];
-
-    isLoading = false;
-
     createGUI();
 
     modeDropList.setItems(modes, 0);
-    
+
     getNextQuestion();
+
+    isLoading = false;
 }
 
 
@@ -212,12 +207,12 @@ void updateGuiQuestion() {
     questionLabel.setText("Question: " + currentQuestion.text);
 }
 
-int getHovered(){
-    if(yesButton == null || noButton == null) return 0;
-    if(yesButton.isOver(guiWin.mouseX,guiWin.mouseY))
+int getHovered() {
+    if (yesButton == null || noButton == null) return 0;
+    if (yesButton.isOver(guiWin.mouseX, guiWin.mouseY))
         return 1;
-    else if(noButton.isOver(guiWin.mouseX,guiWin.mouseY))
+    else if (noButton.isOver(guiWin.mouseX, guiWin.mouseY))
         return 2;
     else 
-        return 0;
+    return 0;
 }
