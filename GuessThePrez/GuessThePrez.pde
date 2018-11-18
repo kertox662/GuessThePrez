@@ -238,7 +238,7 @@ void drawTitle(int cX, int y) {
     color[] colorArray = curMode.equals("American")?usColors:canadaColors;
 
     char[] titleChars = title.toCharArray();
-    float x = cX - textWidth(title)/2;
+    float x = cX - textWidth(title)/2 + textWidth(title.charAt(0))/2;
     for (int i = 0; i < titleChars.length; i++) {
         if (i < curTitleIndex) {
             fill(colorArray[(curColor + 1)%colorArray.length]);
@@ -282,4 +282,9 @@ int getHovered() {
         return 2;
     else 
     return 0;
+}
+
+void keyPressed(){
+    if(key == ESC)
+        exit();
 }
