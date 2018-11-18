@@ -31,8 +31,9 @@ class Question {
 }
 
 void getNextQuestion() {
-    int minDiff = masterCandidates.length + 1;
-    for (Question q : questions) {
+    int minDiff = currentCandidates.size() + 1;
+    Question[] usedQuestions = (curMode.equals("American"))?questionsUS:questionsCan;
+    for (Question q : usedQuestions) {
         minDiff = min(q.getDifferenceInResults(), minDiff);
 
         if (q.getDifferenceInResults() <= minDiff)
@@ -48,8 +49,14 @@ void respondToQuestion(boolean response) {
         if (currentQuestion.answers.get(i) != response) {
             undoCandidateClipboard.add(currentCandidates.get(i));
             currentCandidates.remove(i);
-            for (int j = 0; j < questions.length; j++)
-                questions[j].answers.remove(i);
+            if (curMode.equals("American")) {
+                for (int j = 0; j < questionsUS.length; j++)
+                    questionsUS[j].answers.remove(i);
+            }
+            else{
+                for (int j = 0; j < questionsCan.length; j++)
+                    questionsCan[j].answers.remove(i);
+            }
         }
     }
     getNextQuestion();

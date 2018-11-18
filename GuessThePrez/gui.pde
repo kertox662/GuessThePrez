@@ -2,7 +2,7 @@
  * ====                   WARNING                        ===
  * =========================================================
  * The code in this tab has been generated from the GUI form
- * designer and care should be taken when editing this file.
+ * designer and care should be taken when editing this fileUS.
  * Only add/edit code inside the event handlers i.e. only
  * use lines between the matching comment tags. e.g.
 
@@ -39,6 +39,11 @@ public void toggleDisplayEffects(GCheckbox source, GEvent event) { //_CODE_:show
 
 public void selectMode(GDropList source, GEvent event) { //_CODE_:modeDropList:585678:
   curMode = source.getSelectedText();
+  if(curMode.equals("American"))
+      title = "Guess The Prez!";
+  else
+      title = "Guess The Minister";
+  reset();
   
 } //_CODE_:modeDropList:585678:
 
@@ -51,7 +56,7 @@ public void toggleAnimateTitle(GCheckbox source, GEvent event) { //_CODE_:animat
 } //_CODE_:animateTitleCheck:211146:
 
 public void changeAnimSpeed(GSlider source, GEvent event) { //_CODE_:animSpeedSlider:955392:
-  int divisor = source.getValueI();
+  int divisor = 100 - source.getValueI();
   animSpeed = (divisor / 5);
 } //_CODE_:animSpeedSlider:955392:
 

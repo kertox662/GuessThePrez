@@ -1,4 +1,6 @@
-with open("President_Data.csv", "r") as f:
+from sys import argv
+
+with open(argv[1], "r") as f:
     x = [line.strip().split(",") for line in f]
 
 for i in x:
