@@ -9,8 +9,7 @@ Question[] questions;
 
 PImage[] portraits;
 boolean playAgain = true;
-String[] topRow;
-int buttonPressed; 
+String[] topRow; 
 
 PImage cross;
 
@@ -66,7 +65,6 @@ void draw() {
         fill(0);
         textSize(10);
         textLeading(10);
-
         background(127);
         drawPortraits();
 
@@ -78,6 +76,13 @@ void draw() {
 }
 
 void reset() {
+    setCurrentCandidates(masterCandidates);
+    for (Question q: questions){
+        q.resetQuestion();
+    }
+    
+    
+    
 }
 
 void drawPortraits() {
