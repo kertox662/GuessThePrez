@@ -120,6 +120,23 @@ public void createGUI() {
     animationSpeedLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
     animationSpeedLabel.setText("Title Animation Speed");
     animationSpeedLabel.setOpaque(false);
+    
+    volumeSlider = new GSlider(guiWin, 80, 280, 100, 50, 10.0);
+    volumeSlider.setShowValue(true);
+    volumeSlider.setShowLimits(true);
+    volumeSlider.setLimits(50, 0, 100);
+    volumeSlider.setNbrTicks(11);
+    volumeSlider.setStickToTicks(true);
+    volumeSlider.setShowTicks(true);
+    volumeSlider.setNumberFormat(G4P.INTEGER, 0);
+    volumeSlider.setOpaque(false);
+    volumeSlider.addEventHandler(this, "changeAnimSpeed");
+    
+    
+    volumeLabel = new GLabel(guiWin, 180, 280, 140, 20);
+    volumeLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+    volumeLabel.setText("Music Volume");
+    volumeLabel.setOpaque(false);
     guiWin.loop();
 }
 
@@ -136,3 +153,5 @@ GButton ResetButton;
 GCheckbox animateTitleCheck; 
 GSlider animSpeedSlider; 
 GLabel animationSpeedLabel; 
+GSlider volumeSlider;
+GLabel volumeLabel;
