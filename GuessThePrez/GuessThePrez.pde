@@ -61,7 +61,10 @@ void draw() {
     if (isLoading) {
 
         drawLoading();
-    } else {
+    } else if(isAnswerFound()) {
+        drawBackground();
+        displayLastCandidate();
+    }else {
         fill(0, 200, 0);
         textSize(10);
         textLeading(10);
@@ -88,6 +91,12 @@ void drawPortraits() {
     }
     catch(IndexOutOfBoundsException e) {
     }
+}
+
+void displayLastCandidate(){
+    Candidate c = currentCandidates.get(0);
+    image(c.portraitL ,width/2, height/2);
+    text("My Guess is: " + c.name, width/2, height/2 + c.portraitL.height/2 + 10);
 }
 
 void drawBackground() {
