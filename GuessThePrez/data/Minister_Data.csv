@@ -1,4 +1,4 @@
-Prime Minister,Were they born in Quebec?,Were they born in Ontario?,Did they serve in the military?,Are they knighted?,Did they have multiple distinct terms?,Did they spend at least 6 years as PM?,Are they Liberal?,Were they MP prior to PM?,Were they appointed?,Were they elected?,Died in Office?,Other PM with same first/last name?,Were they in office for less than 3 years?
+Prime Minister,Were they born in Quebec?,Were they born in Ontario?,Did they serve in the military?,Are they knighted?,Did they have multiple distinct terms?,Did they spend at least 6 years as PM?,Are they Liberal?,Were they MP prior to PM?,Were they appointed?,Were they elected?,Did they die in office?,Is there another PM with same first/last name?,Were they in office for less than 3 years?
 Sir John A. Macdonald,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE
 Alexander Mackenzie,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE
 Sir John Abbott,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE

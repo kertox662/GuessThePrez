@@ -60,5 +60,4 @@ void respondToQuestion(boolean response) {
         }
     }
     getNextQuestion();
-    println(isAnswerFound());
 }

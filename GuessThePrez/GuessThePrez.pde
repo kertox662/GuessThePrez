@@ -2,7 +2,6 @@ import processing.sound.*;
 import g4p_controls.*;
 import java.awt.Font;
 
-
 Candidate[] masterCandidatesUS;
 Candidate[] masterCandidatesCan;
 Question[] questionsUS;
@@ -61,9 +60,16 @@ void setup() {
 
 void draw() {
     if (isLoading) {
-
         drawLoading();
     } else {
+    } else if(isAnswerFound()) {
+        drawBackground();
+        displayLastCandidate();
+    } else {
+        fill(0, 200, 0);
+        textSize(10);
+        textLeading(10);
+        //background(127);
         drawBackground();
         
         if (!isStarted) {
@@ -118,7 +124,7 @@ void drawBackground() {
 }
 
 
-void reset() {
+void reset() {    
     if (curMode.equals("American"))
         setCurrentCandidates(masterCandidatesUS);
     else
@@ -133,7 +139,8 @@ void reset() {
 
     curColor = 0;
     curTitleIndex = 0;
-
+    
+    undoCandidateClipboard.clear();
     getNextQuestion();
 }
 
