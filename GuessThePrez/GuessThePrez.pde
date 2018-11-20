@@ -59,12 +59,11 @@ void setup() {
 
 void draw() {
     if (isLoading) {
-
         drawLoading();
     } else if(isAnswerFound()) {
         drawBackground();
         displayLastCandidate();
-    }else {
+    } else {
         fill(0, 200, 0);
         textSize(10);
         textLeading(10);
@@ -110,7 +109,7 @@ void drawBackground() {
 }
 
 
-void reset() {
+void reset() {    
     if (curMode.equals("American"))
         setCurrentCandidates(masterCandidatesUS);
     else
@@ -126,6 +125,7 @@ void reset() {
     curColor = 0;
     curTitleIndex = 0;
     
+    undoCandidateClipboard.clear();
     getNextQuestion();
 }
 
