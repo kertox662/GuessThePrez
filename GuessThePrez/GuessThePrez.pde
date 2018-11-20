@@ -1,7 +1,6 @@
 import g4p_controls.*;
 import java.awt.Font;
 
-
 Candidate[] masterCandidatesUS;
 Candidate[] masterCandidatesCan;
 Question[] questionsUS;
