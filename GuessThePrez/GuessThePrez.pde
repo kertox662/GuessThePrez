@@ -1,3 +1,4 @@
+import processing.sound.*;
 import g4p_controls.*;
 import java.awt.Font;
 
@@ -9,6 +10,7 @@ Question[] questionsCan;
 ArrayList<Candidate> currentCandidates;
 ArrayList<Candidate> undoCandidateClipboard;
 
+SoundFile[] sounds;
 
 PImage[] portraits;
 boolean playAgain = true;
@@ -19,7 +21,7 @@ PImage canadaFlag;
 PImage usFlag;
 
 boolean isLoading = true;
-boolean hasStarted = false;
+boolean isStarted = false;
 int loaded = 0, loadMax = 0;
 String curLoadProcess = "Loading";
 
@@ -44,7 +46,7 @@ final int xOff = 40, yOff = 98;
 
 void setup() {
     size(660, 750);
-    
+
     imageMode(CENTER);
     blendMode(REPLACE);
     resetFormating();
@@ -61,29 +63,34 @@ void draw() {
     if (isLoading) {
 
         drawLoading();
-    } else if(isAnswerFound()) {
+    } else {
         drawBackground();
-        displayLastCandidate();
-    }else {
-        fill(0, 200, 0);
-        textSize(10);
-        textLeading(10);
-        //background(127);
-        drawBackground();
-        drawPortraits();
+        
+        if (!isStarted) {
+            drawTitle(width/2, height/2 - 50);
+            
+        } else if (isAnswerFound()) {
+            displayLastCandidate();
+            drawTitle(width/2, 35);
+            
+        } else {
+            fill(0, 200, 0);
+            textSize(10);
+            textLeading(10);
+            drawPortraits();
 
-        if (showSelected)
-            coverAffected(getHovered());
+            if (showSelected)
+                coverAffected(getHovered());
 
-        drawTitle(width/2, 35);
+            drawTitle(width/2, 35);
+        }
     }
 }
 
 void drawPortraits() {
     try {
         for (int i=0; i<currentCandidates.size(); i++) {
-            if(textWidth(currentCandidates.get(i).name) > 180){
-                
+            if (textWidth(currentCandidates.get(i).name) > 180) {
             }
             image(currentCandidates.get(i).portrait, i%8*padX+xOff, int(i/8)*padY+yOff);
             text(currentCandidates.get(i).name, i%8*padX+xOff - 30, int(i/8)*padY+yOff + 37, 60, 1000);
@@ -93,10 +100,11 @@ void drawPortraits() {
     }
 }
 
-void displayLastCandidate(){
+void displayLastCandidate() {
     Candidate c = currentCandidates.get(0);
-    image(c.portraitL ,width/2, height/2);
-    text("My Guess is: " + c.name, width/2, height/2 + c.portraitL.height/2 + 10);
+    image(c.portraitL, width/2, height/2 + 50);
+    fill(0, 180, 150);
+    text("My Guess is: " + c.name, width/2, height/2 + c.portraitL.height/2 + 110);
 }
 
 void drawBackground() {
@@ -125,11 +133,11 @@ void reset() {
 
     curColor = 0;
     curTitleIndex = 0;
-    
+
     getNextQuestion();
 }
 
-void resetFormating(){
+void resetFormating() {
     textAlign(CENTER);
     textSize(10);
     textLeading(10);
@@ -203,13 +211,15 @@ void loadData() {
     loadPortraits(masterCandidatesUS);
     loadPortraits(masterCandidatesCan);
 
-    createGUI();
+    //createGUI();
 
-    modeDropList.setItems(modes, 0);
+    //modeDropList.setItems(modes, 0);
 
-    getNextQuestion();
-
-    isLoading = false;
+    //getNextQuestion();
+    
+    
+    finishSetup();
+    
 }
 
 void loadPortraits(Candidate[] c) {
@@ -219,9 +229,16 @@ void loadPortraits(Candidate[] c) {
         c[i].portrait.resize(60, 75);
         loaded++;
         c[i].setPortrait(loadImage("portraits/"+join(c[i].name.split(" "), "-")+".jpg"), true);
-        c[i].portraitL.resize(300, 375);
+        c[i].portraitL.resize(180, 225);
         loaded++;
     }
+}
+
+void finishSetup(){
+    isLoading = false;
+    startButton = new GButton(this, width/2 - 30, height/2 - 30 , 60, 30);
+    startButton.addEventHandler(this, "startGame");
+    startButton.setText("Start");
 }
 
 void drawLoading() {
@@ -293,7 +310,24 @@ int getHovered() {
     return 0;
 }
 
-void keyPressed(){
-    if(key == ESC)
+void keyPressed() {
+    if (key == ESC)
         exit();
+}
+
+
+void playSound(int i) {
+    if (!sounds[i].isPlaying()) {
+        for (SoundFile s : sounds)
+            s.stop();
+        sounds[i].loop();
+    }
+}
+
+void startGame(GButton source, GEvent e) {
+    source.dispose();
+    createGUI();
+    modeDropList.setItems(modes, 0);
+    getNextQuestion();
+    isStarted = true;
 }

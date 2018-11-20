@@ -137,6 +137,8 @@ public void createGUI() {
     volumeLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
     volumeLabel.setText("Music Volume");
     volumeLabel.setOpaque(false);
+    
+    
     guiWin.loop();
 }
 
@@ -155,3 +157,5 @@ GSlider animSpeedSlider;
 GLabel animationSpeedLabel; 
 GSlider volumeSlider;
 GLabel volumeLabel;
+
+GButton startButton;
