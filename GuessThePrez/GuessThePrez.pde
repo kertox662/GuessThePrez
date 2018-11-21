@@ -2,6 +2,10 @@ import processing.sound.*;
 import g4p_controls.*;
 import java.awt.Font;
 
+
+//=====================================================================
+//===========================Variables=================================
+//=====================================================================
 Candidate[] masterCandidatesUS;
 Candidate[] masterCandidatesCan;
 Question[] questionsUS;
@@ -41,14 +45,16 @@ boolean playAnim = true;
 final int padX = 80, padY = 105;
 final int xOff = 40, yOff = 98;
 
-
+//=====================================================================
+//===================Functions and Procedures==========================
+//=====================================================================
 
 void setup() {
     size(660, 750);
 
     imageMode(CENTER);
     blendMode(REPLACE);
-    resetFormating();
+    resetFormatting();
     stroke(0);
     strokeWeight(2);
 
@@ -61,24 +67,26 @@ void setup() {
 void draw() {
     if (isLoading) {
         drawLoading();
-    } else {
-    } else if(isAnswerFound()) {
+    } else if (isAnswerFound()) {
         drawBackground();
+        if (!isConfettiSet) {
+            setupConfetti();
+        }
+        drawConfetti();
         displayLastCandidate();
+        if (curMode.equals("American"))
+            playSound(1);
+        else
+            playSound(2);
     } else {
         fill(0, 200, 0);
         textSize(10);
         textLeading(10);
-        //background(127);
         drawBackground();
-        
+        playSound(0);
+
         if (!isStarted) {
             drawTitle(width/2, height/2 - 50);
-            
-        } else if (isAnswerFound()) {
-            displayLastCandidate();
-            drawTitle(width/2, 35);
-            
         } else {
             fill(0, 200, 0);
             textSize(10);
@@ -93,13 +101,20 @@ void draw() {
     }
 }
 
+
+//=====================================================================
+//========================Drawing Procedures===========================
+//=====================================================================
+
 void drawPortraits() {
     try {
+        resetFormatting();
         for (int i=0; i<currentCandidates.size(); i++) {
             if (textWidth(currentCandidates.get(i).name) > 180) {
             }
             image(currentCandidates.get(i).portrait, i%8*padX+xOff, int(i/8)*padY+yOff);
-            text(currentCandidates.get(i).name, i%8*padX+xOff - 30, int(i/8)*padY+yOff + 37, 60, 1000);
+            text(currentCandidates.get(i).name, i%8*padX+xOff - 30, int(i/8)*padY+yOff + 37, 60, 300);
+            println(i%8*padX+xOff - 30, int(i/8)*padY+yOff + 37);
         }
     }
     catch(IndexOutOfBoundsException e) {
@@ -121,131 +136,6 @@ void drawBackground() {
     } else {
         image(canadaFlag, width/2, height/2);
     }
-}
-
-
-void reset() {    
-    if (curMode.equals("American"))
-        setCurrentCandidates(masterCandidatesUS);
-    else
-        setCurrentCandidates(masterCandidatesCan);
-
-    for (Question q : questionsUS) {
-        q.resetQuestion();
-    }
-    for (Question q : questionsCan) {
-        q.resetQuestion();
-    }
-
-    curColor = 0;
-    curTitleIndex = 0;
-    
-    undoCandidateClipboard.clear();
-    getNextQuestion();
-}
-
-void resetFormating() {
-    textAlign(CENTER);
-    textSize(10);
-    textLeading(10);
-}
-
-
-void loadData() {
-    String[] fileUS = loadStrings("President_Data.csv");
-    String[] fileCan = loadStrings("Minister_Data.csv");
-
-    for (int i = 0; i < fileUS.length; i++) {
-        fileUS[i] = trim(fileUS[i]);
-    }
-
-    for (int i = 0; i < fileCan.length; i++) {
-        fileCan[i] = trim(fileCan[i]);
-    }
-
-
-    String[] topRowUS = fileUS[0].split(",");
-    String[] topRowCan = fileCan[0].split(",");
-
-    loadMax = 3*(fileUS.length + fileCan.length - 2) + topRowUS.length + topRowCan.length + 1;
-
-    curLoadProcess = "Loading - Misc Images";
-    cross = loadImage("cross.png");
-    loaded++;
-    usFlag = loadImage("AmericanFlag.jpg");
-    loaded++;
-    canadaFlag = loadImage("CanadianFlag.jpg");
-    loaded++;
-
-    masterCandidatesUS = new Candidate[fileUS.length-1];
-    questionsUS = new Question[topRowUS.length - 1];
-
-    masterCandidatesCan = new Candidate[fileCan.length-1];
-    questionsCan = new Question[topRowCan.length - 1];
-
-    curLoadProcess = "Loading - Candidates";
-    for (int i = 1; i < fileUS.length; i++) {
-        masterCandidatesUS[i-1] = new Candidate(fileUS[i].split(",")[0]);
-        loaded++;
-    }
-
-    for (int i = 1; i < fileCan.length; i++) {
-        masterCandidatesCan[i-1] = new Candidate(fileCan[i].split(",")[0]);
-        loaded++;
-    }
-
-    curLoadProcess = "Loading - Questions";
-    for (int i = 1; i < topRowUS.length; i++) {
-        ArrayList<Boolean> answers = new ArrayList<Boolean>();
-        for (int j = 1; j < fileUS.length; j++) {
-            answers.add(boolean(fileUS[j].split(",")[i]));
-        }
-        questionsUS[i-1] = new Question(topRowUS[i], answers);
-        loaded++;
-    }
-
-    for (int i = 1; i < topRowCan.length; i++) {
-        ArrayList<Boolean> answers = new ArrayList<Boolean>();
-        for (int j = 1; j < fileCan.length; j++) {
-            answers.add(boolean(fileCan[j].split(",")[i]));
-        }
-        questionsCan[i-1] = new Question(topRowCan[i], answers);
-        loaded++;
-    }
-
-    setCurrentCandidates(masterCandidatesUS);
-
-    loadPortraits(masterCandidatesUS);
-    loadPortraits(masterCandidatesCan);
-
-    //createGUI();
-
-    //modeDropList.setItems(modes, 0);
-
-    //getNextQuestion();
-    
-    
-    finishSetup();
-    
-}
-
-void loadPortraits(Candidate[] c) {
-    for (int i = 0; i < c.length; i++) {
-        curLoadProcess = "Loading - " +join(c[i].name.split(" "), "-")+".jpg";
-        c[i].setPortrait(loadImage("portraits/"+join(c[i].name.split(" "), "-")+".jpg"), false);
-        c[i].portrait.resize(60, 75);
-        loaded++;
-        c[i].setPortrait(loadImage("portraits/"+join(c[i].name.split(" "), "-")+".jpg"), true);
-        c[i].portraitL.resize(180, 225);
-        loaded++;
-    }
-}
-
-void finishSetup(){
-    isLoading = false;
-    startButton = new GButton(this, width/2 - 30, height/2 - 30 , 60, 30);
-    startButton.addEventHandler(this, "startGame");
-    startButton.setText("Start");
 }
 
 void drawLoading() {
@@ -307,15 +197,152 @@ void coverAffected(int toCover) {
     }
 }
 
-int getHovered() {
-    if (yesButton == null || noButton == null) return 0;
-    if (yesButton.isOver(guiWin.mouseX, guiWin.mouseY))
-        return 1;
-    else if (noButton.isOver(guiWin.mouseX, guiWin.mouseY))
-        return 2;
-    else 
-    return 0;
+
+
+//=====================================================================
+//=========================Reset Procedures============================
+//=====================================================================
+void reset() {    
+    if (curMode.equals("American"))
+        setCurrentCandidates(masterCandidatesUS);
+    else
+        setCurrentCandidates(masterCandidatesCan);
+
+    for (Question q : questionsUS) {
+        q.resetQuestion();
+    }
+    for (Question q : questionsCan) {
+        q.resetQuestion();
+    }
+
+    curColor = 0;
+    curTitleIndex = 0;
+    fill(0,255,0);
+
+    isConfettiSet = false;
+
+    undoCandidateClipboard.clear();
+    resetFormatting();
+    getNextQuestion();
 }
+
+void resetFormatting() {
+    textAlign(CENTER);
+    textSize(10);
+    textLeading(10);
+}
+
+
+//=====================================================================
+//============================Data Loading=============================
+//=====================================================================
+
+void loadData() {
+    String[] fileUS = loadStrings("President_Data.csv");
+    String[] fileCan = loadStrings("Minister_Data.csv");
+
+    for (int i = 0; i < fileUS.length; i++) {
+        fileUS[i] = trim(fileUS[i]);
+    }
+
+    for (int i = 0; i < fileCan.length; i++) {
+        fileCan[i] = trim(fileCan[i]);
+    }
+
+
+    String[] topRowUS = fileUS[0].split(",");
+    String[] topRowCan = fileCan[0].split(",");
+
+    loadMax = 2*(fileUS.length + fileCan.length - 2)  + 37;
+
+    curLoadProcess = "Loading - Misc Images";
+    cross = loadImage("Images/cross.png");
+    loaded++;
+    usFlag = loadImage("Images/AmericanFlag.jpg");
+    loaded++;
+    canadaFlag = loadImage("Images/CanadianFlag.jpg");
+    loaded++;
+
+    sounds=new SoundFile[3];
+    curLoadProcess = "Loading - Music - Background Music";
+    sounds[0]=new SoundFile(this, "Music/naruto.mp3");
+    loaded+=14;
+
+    curLoadProcess = "Loading - Music - USanthem.mp3";
+    sounds[1]=new SoundFile(this, "Music/USanthem.mp3");
+    loaded+=8;
+
+    curLoadProcess = "Loading - Music - CanadaAnthem.mp3";
+    sounds[2]=new SoundFile(this, "Music/CanadaAnthem.mp3");
+    loaded+=8;
+
+    masterCandidatesUS = new Candidate[fileUS.length-1];
+    questionsUS = new Question[topRowUS.length - 1];
+
+    masterCandidatesCan = new Candidate[fileCan.length-1];
+    questionsCan = new Question[topRowCan.length - 1];
+
+    curLoadProcess = "Loading - Candidates";
+    for (int i = 1; i < fileUS.length; i++) {
+        masterCandidatesUS[i-1] = new Candidate(fileUS[i].split(",")[0]);
+    }
+    loaded++;
+
+    for (int i = 1; i < fileCan.length; i++) {
+        masterCandidatesCan[i-1] = new Candidate(fileCan[i].split(",")[0]);
+    }
+    loaded++;
+
+    curLoadProcess = "Loading - Questions";
+    for (int i = 1; i < topRowUS.length; i++) {
+        ArrayList<Boolean> answers = new ArrayList<Boolean>();
+        for (int j = 1; j < fileUS.length; j++) {
+            answers.add(boolean(fileUS[j].split(",")[i]));
+        }
+        questionsUS[i-1] = new Question(topRowUS[i], answers);
+    }
+    loaded++;
+
+    for (int i = 1; i < topRowCan.length; i++) {
+        ArrayList<Boolean> answers = new ArrayList<Boolean>();
+        for (int j = 1; j < fileCan.length; j++) {
+            answers.add(boolean(fileCan[j].split(",")[i]));
+        }
+        questionsCan[i-1] = new Question(topRowCan[i], answers);
+    }
+    loaded++;
+
+    setCurrentCandidates(masterCandidatesUS);
+
+    loadPortraits(masterCandidatesUS);
+    loadPortraits(masterCandidatesCan);
+
+    finishSetup();
+}
+
+void loadPortraits(Candidate[] c) {
+    for (int i = 0; i < c.length; i++) {
+        curLoadProcess = "Loading - " +join(c[i].name.split(" "), "-")+".jpg";
+        c[i].setPortrait(loadImage("Images/portraits/"+join(c[i].name.split(" "), "-")+".jpg"), false);
+        c[i].portrait.resize(60, 75);
+        loaded++;
+        c[i].setPortrait(loadImage("Images/portraits/"+join(c[i].name.split(" "), "-")+".jpg"), true);
+        c[i].portraitL.resize(180, 225);
+        loaded++;
+    }
+}
+
+void finishSetup() {
+    isLoading = false;
+    startButton = new GButton(this, width/2 - 30, height/2 - 30, 60, 30);
+    startButton.addEventHandler(this, "startGame");
+    startButton.setText("Start");
+}
+
+
+//=====================================================================
+//======================Miscellaneous=========================
+//=====================================================================
 
 void keyPressed() {
     if (key == ESC)
@@ -337,4 +364,14 @@ void startGame(GButton source, GEvent e) {
     modeDropList.setItems(modes, 0);
     getNextQuestion();
     isStarted = true;
+}
+
+int getHovered() {
+    if (yesButton == null || noButton == null) return 0;
+    if (yesButton.isOver(guiWin.mouseX, guiWin.mouseY))
+        return 1;
+    else if (noButton.isOver(guiWin.mouseX, guiWin.mouseY))
+        return 2;
+    else 
+    return 0;
 }
