@@ -59,9 +59,13 @@ public void toggleAnimateTitle(GCheckbox source, GEvent event) { //_CODE_:animat
 } //_CODE_:animateTitleCheck:211146:
 
 public void changeAnimSpeed(GSlider source, GEvent event) { //_CODE_:animSpeedSlider:955392:
-    int divisor = 100 - source.getValueI();
-    animSpeed = (divisor / 5);
+    animSpeed = int(map(100 - source.getValueI(), 100, 0, 11, 1));
 } //_CODE_:animSpeedSlider:955392:
+
+public void changeVolume(GSlider source, GEvent event){
+    for(SoundFile s : sounds)
+        s.amp(map(source.getValueF(), 0, 100, 0, 1));
+}
 
 
 
@@ -121,23 +125,26 @@ public void createGUI() {
     animationSpeedLabel.setText("Title Animation Speed");
     animationSpeedLabel.setOpaque(false);
     
-    volumeSlider = new GSlider(guiWin, 80, 280, 100, 50, 10.0);
+    volumeSlider=new GSlider(guiWin, 80, 300, 100, 50, 10);
     volumeSlider.setShowValue(true);
     volumeSlider.setShowLimits(true);
     volumeSlider.setLimits(50, 0, 100);
     volumeSlider.setNbrTicks(11);
-    volumeSlider.setStickToTicks(true);
     volumeSlider.setShowTicks(true);
     volumeSlider.setNumberFormat(G4P.INTEGER, 0);
     volumeSlider.setOpaque(false);
-    volumeSlider.addEventHandler(this, "changeAnimSpeed");
+    volumeSlider.addEventHandler(this, "changeVolume");
     
     
-    volumeLabel = new GLabel(guiWin, 180, 280, 140, 20);
-    volumeLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+    volumeLabel = new GLabel(guiWin, 190, 317, 140, 20);
+    volumeLabel.setTextAlign(GAlign.LEFT, GAlign.LEFT);
     volumeLabel.setText("Music Volume");
     volumeLabel.setOpaque(false);
     
+    modeLabel = new GLabel(guiWin, 255, 140, 140, 20);
+    modeLabel.setTextAlign(GAlign.LEFT, GAlign.LEFT);
+    modeLabel.setText("Select Mode");
+    modeLabel.setOpaque(false);
     
     guiWin.loop();
 }
@@ -150,12 +157,12 @@ GButton noButton;
 GButton previousButton; 
 GLabel questionLabel; 
 GCheckbox showEffectBox; 
-GDropList modeDropList; 
+GDropList modeDropList;
+GLabel modeLabel;
 GButton ResetButton; 
 GCheckbox animateTitleCheck; 
 GSlider animSpeedSlider; 
 GLabel animationSpeedLabel; 
 GSlider volumeSlider;
 GLabel volumeLabel;
-
 GButton startButton;

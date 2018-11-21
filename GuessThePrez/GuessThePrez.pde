@@ -1,4 +1,4 @@
-import processing.sound.*;
+import processing.sound.*; //<>// //<>//
 import g4p_controls.*;
 import java.awt.Font;
 
@@ -22,6 +22,8 @@ PImage cross;
 
 PImage canadaFlag;
 PImage usFlag;
+PImage ovalOffice;
+PImage pmOffice;
 
 boolean isLoading = true;
 boolean isStarted = false;
@@ -34,7 +36,7 @@ boolean showSelected = true;
 String [] modes = {"American", "Canadian"};
 String curMode = modes[0];
 
-color[] usColors = {color(255, 0, 0), color(255), color(0, 0, 255)};
+color[] usColors = { color(255), color(255, 0, 0), color(0, 0, 255)};
 color[] canadaColors = { color(255, 0, 0), color(255)};
 String title = "Guess The Prez!";
 int curColor = 0;
@@ -51,10 +53,9 @@ final int xOff = 40, yOff = 98;
 
 void setup() {
     size(660, 750);
-
+    textAlign(CENTER);
     imageMode(CENTER);
-    blendMode(REPLACE);
-    resetFormatting();
+    //blendMode(REPLACE);
     stroke(0);
     strokeWeight(2);
 
@@ -65,39 +66,16 @@ void setup() {
 }
 
 void draw() {
-    if (isLoading) {
+    if (isLoading) 
         drawLoading();
-    } else if (isAnswerFound()) {
-        drawBackground();
-        if (!isConfettiSet) {
-            setupConfetti();
-        }
-        drawConfetti();
-        displayLastCandidate();
-        if (curMode.equals("American"))
-            playSound(1);
-        else
-            playSound(2);
+    else if (isAnswerFound()) {
+        drawFinal();
+        questionLabel.setText("Press Restart to Play Again");
+        previousButton.setVisible(false);
     } else {
-        fill(0, 200, 0);
-        textSize(10);
-        textLeading(10);
-        drawBackground();
-        playSound(0);
-
-        if (!isStarted) {
-            drawTitle(width/2, height/2 - 50);
-        } else {
-            fill(0, 200, 0);
-            textSize(10);
-            textLeading(10);
-            drawPortraits();
-
-            if (showSelected)
-                coverAffected(getHovered());
-
-            drawTitle(width/2, 35);
-        }
+        drawRegular();
+        if (currentQuestion != null)
+            updateGuiQuestion();
     }
 }
 
@@ -110,31 +88,86 @@ void drawPortraits() {
     try {
         resetFormatting();
         for (int i=0; i<currentCandidates.size(); i++) {
-            if (textWidth(currentCandidates.get(i).name) > 180) {
-            }
+
             image(currentCandidates.get(i).portrait, i%8*padX+xOff, int(i/8)*padY+yOff);
-            text(currentCandidates.get(i).name, i%8*padX+xOff - 30, int(i/8)*padY+yOff + 37, 60, 300);
-            println(i%8*padX+xOff - 30, int(i/8)*padY+yOff + 37);
+            if (textWidth(currentCandidates.get(i).name) > 120) { 
+                textSize(8); 
+                textLeading(8);
+            }
+            text(currentCandidates.get(i).name, i%8*padX+xOff, int(i/8)*padY+yOff + 87, 60, 100);
+            resetFormatting();
         }
     }
     catch(IndexOutOfBoundsException e) {
     }
 }
 
+void drawRegular() {
+    fill(0, 200, 0);
+    textSize(10);
+    textLeading(10);
+    drawBackground();
+    playSound(0);
+
+    if (!isStarted) {
+        drawTitle(width/2, height/2 - 50);
+    } else {
+        fill(0, 200, 0);
+        resetFormatting();
+        drawPortraits();
+
+        if (showSelected)
+            coverAffected(getHovered());
+
+        drawTitle(width/2, 35);
+
+        if (undoCandidateClipboard.size() == 0 || isAnswerFound())
+            previousButton.setVisible(false);
+        else
+            previousButton.setVisible(true);
+    }
+}
+
+void drawFinal() {
+    drawBackground();
+    if (!isConfettiSet) {
+        setupConfetti();
+    }
+    drawConfetti();
+    fill(0, 100);
+    float boxWidth = textWidth("My Guess is: " + currentCandidates.get(0).name);
+    rect(width/2, height/2 + 40, boxWidth + 20,330);
+    drawTitle(width/2, height/2 - 80);
+    textSize(20);
+    displayLastCandidate();
+    if (curMode.equals("American"))
+        playSound(1);
+    else
+        playSound(2);
+}
+
 void displayLastCandidate() {
     Candidate c = currentCandidates.get(0);
     image(c.portraitL, width/2, height/2 + 50);
-    fill(0, 180, 150);
-    text("My Guess is: " + c.name, width/2, height/2 + c.portraitL.height/2 + 110);
+    //fill(0, 180, 150);
+    fill(255);
+    text("My Guess is: " + c.name, width/2, height/2 + c.portraitL.height/2 + 60);
 }
 
 void drawBackground() {
     if (curMode.equals("American")) {
-        imageMode(CORNER);
-        image(usFlag, 0, 0);
-        imageMode(CENTER);
+        if (isAnswerFound())
+            image(ovalOffice, width/2, height/2);
+        else {
+            imageMode(CORNER);
+            image(usFlag, 0, 0);
+            imageMode(CENTER);
+        }
     } else {
-        image(canadaFlag, width/2, height/2);
+        if (isAnswerFound())
+            image(pmOffice, width/2, height/2);
+        else
+            image(canadaFlag, width/2, height/2);
     }
 }
 
@@ -151,10 +184,12 @@ void drawLoading() {
 }
 
 void drawTitle(int cX, int y) {
+    textAlign(CENTER);
     textSize(30);
-    if (animSpeed == 0 || !playAnim) {
+    if (animSpeed == 0 || !playAnim || isAnswerFound()) {
         fill(usColors[0]);
         text(title, cX, y);
+        resetFormatting();
         return;
     }
 
@@ -182,6 +217,7 @@ void drawTitle(int cX, int y) {
     }
     if ((frameCount%((animSpeed != 0)?animSpeed:1)) == 0)
         curTitleIndex++;
+    resetFormatting();
 }
 
 void updateGuiQuestion() {
@@ -217,7 +253,7 @@ void reset() {
 
     curColor = 0;
     curTitleIndex = 0;
-    fill(0,255,0);
+    fill(0, 255, 0);
 
     isConfettiSet = false;
 
@@ -227,7 +263,7 @@ void reset() {
 }
 
 void resetFormatting() {
-    textAlign(CENTER);
+    textAlign(CENTER, TOP);
     textSize(10);
     textLeading(10);
 }
@@ -253,7 +289,7 @@ void loadData() {
     String[] topRowUS = fileUS[0].split(",");
     String[] topRowCan = fileCan[0].split(",");
 
-    loadMax = 2*(fileUS.length + fileCan.length - 2)  + 37;
+    loadMax = 2*(fileUS.length + fileCan.length - 2)  + 39;
 
     curLoadProcess = "Loading - Misc Images";
     cross = loadImage("Images/cross.png");
@@ -262,10 +298,16 @@ void loadData() {
     loaded++;
     canadaFlag = loadImage("Images/CanadianFlag.jpg");
     loaded++;
+    ovalOffice = loadImage("Images/ovalOffice.jpg");
+    ovalOffice.resize(width, height);
+    loaded++;
+    pmOffice = loadImage("Images/pmOffice.jpg");
+    pmOffice.resize(width, height);
+    loaded++;
 
     sounds=new SoundFile[3];
     curLoadProcess = "Loading - Music - Background Music";
-    sounds[0]=new SoundFile(this, "Music/naruto.mp3");
+    sounds[0]=new SoundFile(this, "Music/Background.mp3");
     loaded+=14;
 
     curLoadProcess = "Loading - Music - USanthem.mp3";
@@ -322,7 +364,7 @@ void loadData() {
 
 void loadPortraits(Candidate[] c) {
     for (int i = 0; i < c.length; i++) {
-        curLoadProcess = "Loading - " +join(c[i].name.split(" "), "-")+".jpg";
+        curLoadProcess = "Loading - Image - " +join(c[i].name.split(" "), "-")+".jpg";
         c[i].setPortrait(loadImage("Images/portraits/"+join(c[i].name.split(" "), "-")+".jpg"), false);
         c[i].portrait.resize(60, 75);
         loaded++;
@@ -333,6 +375,8 @@ void loadPortraits(Candidate[] c) {
 }
 
 void finishSetup() {
+    resetFormatting();
+    rectMode(CENTER);
     isLoading = false;
     startButton = new GButton(this, width/2 - 30, height/2 - 30, 60, 30);
     startButton.addEventHandler(this, "startGame");

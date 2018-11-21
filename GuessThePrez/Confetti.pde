@@ -19,7 +19,6 @@ color[] colors = {red, white, blue};
 
 
 void setupConfetti() {
-  rectMode(CENTER);
   int domain;
   
   if (curMode.equals("American"))
