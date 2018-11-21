@@ -29,20 +29,23 @@ boolean isAnswerFound(){
 }
 
 void undoCandidates(){
+    Candidate[] undoArray = (curMode.equals("American"))?masterCandidatesUS:masterCandidatesCan;
+    Question[] questionArray = (curMode.equals("American"))?questionsUS:questionsCan;
     for(int i = undoCandidateClipboard.size() - 1; i >= 0; i--){
-        int undoInd = getMasterIndex(masterCandidatesUS, undoCandidateClipboard.get(i));
+        
+        int undoInd = getMasterIndex(undoArray, undoCandidateClipboard.get(i));
         for(int j = 0; j < currentCandidates.size(); j++){
             
-            if(getMasterIndex(masterCandidatesUS, currentCandidates.get(j)) > undoInd){
+            if(getMasterIndex(undoArray, currentCandidates.get(j)) > undoInd){
                 currentCandidates.add(j, undoCandidateClipboard.get(i));
-                for(Question q : questionsUS){
+                for(Question q : questionArray){
                     q.answers.add(j, q.masterAnswers[undoInd]);
                 }
                 break;
             }
             if(j == currentCandidates.size() - 1){
                 currentCandidates.add(undoCandidateClipboard.get(i));
-                for(Question q : questionsUS){
+                for(Question q : questionArray){
                     q.answers.add(q.masterAnswers[undoInd]);
                 }
                 break;

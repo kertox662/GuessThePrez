@@ -46,7 +46,7 @@ public void selectMode(GDropList source, GEvent event) { //_CODE_:modeDropList:5
     if (curMode.equals("American"))
         title = "Guess The Prez!";
     else
-        title = "Guess The Minister";
+        title = "Guess The Minister!";
     reset();
 } //_CODE_:modeDropList:585678:
 

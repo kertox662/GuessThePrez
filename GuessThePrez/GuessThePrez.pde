@@ -20,6 +20,8 @@ boolean playAgain = true;
 
 PImage cross;
 
+color blackAlpha = color(0, 100);
+
 PImage canadaFlag;
 PImage usFlag;
 PImage ovalOffice;
@@ -36,7 +38,7 @@ boolean showSelected = true;
 String [] modes = {"American", "Canadian"};
 String curMode = modes[0];
 
-color[] usColors = { color(255), color(255, 0, 0), color(0, 0, 255)};
+color[] usColors = {color(255, 0, 0), color(255), color(0, 0, 255)};
 color[] canadaColors = { color(255, 0, 0), color(255)};
 String title = "Guess The Prez!";
 int curColor = 0;
@@ -88,7 +90,7 @@ void drawPortraits() {
     try {
         resetFormatting();
         for (int i=0; i<currentCandidates.size(); i++) {
-
+            fill(0, 127, 127);
             image(currentCandidates.get(i).portrait, i%8*padX+xOff, int(i/8)*padY+yOff);
             if (textWidth(currentCandidates.get(i).name) > 120) { 
                 textSize(8); 
@@ -134,9 +136,10 @@ void drawFinal() {
         setupConfetti();
     }
     drawConfetti();
-    fill(0, 100);
-    float boxWidth = textWidth("My Guess is: " + currentCandidates.get(0).name);
-    rect(width/2, height/2 + 40, boxWidth + 20,330);
+    float boxWidth = max(textWidth("My Guess is: " + currentCandidates.get(0).name), textWidth(title) + 20);
+    fill(blackAlpha);
+    if(curMode.equals("Canadian"))
+        rect(width/2, height/2 + 45, boxWidth + 20,300);
     drawTitle(width/2, height/2 - 80);
     textSize(20);
     displayLastCandidate();
@@ -186,6 +189,9 @@ void drawLoading() {
 void drawTitle(int cX, int y) {
     textAlign(CENTER);
     textSize(30);
+    fill(blackAlpha);
+    if((curMode.equals("Canadian") && !isAnswerFound()) || !isStarted)
+        rect(cX,y - 10,textWidth(title) + 10, 32);
     if (animSpeed == 0 || !playAnim || isAnswerFound()) {
         fill(usColors[0]);
         text(title, cX, y);
@@ -294,7 +300,7 @@ void loadData() {
     curLoadProcess = "Loading - Misc Images";
     cross = loadImage("Images/cross.png");
     loaded++;
-    usFlag = loadImage("Images/AmericanFlag.jpg");
+    usFlag = loadImage("Images/AmericanFlag2.jpg");
     loaded++;
     canadaFlag = loadImage("Images/CanadianFlag.jpg");
     loaded++;
