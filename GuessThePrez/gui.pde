@@ -20,29 +20,29 @@ synchronized public void drawGuiWin(PApplet appc, GWinData data) { //_CODE_:guiW
 
 public void clickYes(GButton source, GEvent event) { //_CODE_:yesButton:682798:
     if (!isAnswerFound()) {
-        respondToQuestion(true);
+        respondToQuestion(true); //Respond yes to question
         getNextQuestion();
     }
 } //_CODE_:yesButton:682798:
 
 public void clickNo(GButton source, GEvent event) { //_CODE_:noButton:464313:
     if (!isAnswerFound()) {
-        respondToQuestion(false);
+        respondToQuestion(false); //Respond no to question
         getNextQuestion();
     }
 } //_CODE_:noButton:464313:
 
 public void PreviousQuestion(GButton source, GEvent event) { //_CODE_:previousButton:565747:
-    undoCandidates();
+    undoCandidates(); //Undo previous answer
     getNextQuestion();
 } //_CODE_:previousButton:565747:
 
 public void toggleDisplayEffects(GCheckbox source, GEvent event) { //_CODE_:showEffectBox:597986:
-    showSelected = showEffectBox.isSelected();
+    showSelected = showEffectBox.isSelected(); //Toggles the variable to show effects of answers
 } //_CODE_:showEffectBox:597986:
 
 public void selectMode(GDropList source, GEvent event) { //_CODE_:modeDropList:585678:
-    curMode = source.getSelectedText();
+    curMode = source.getSelectedText(); //Changes the mode and the title
     if (curMode.equals("American"))
         title = "Guess The Prez!";
     else
@@ -51,18 +51,18 @@ public void selectMode(GDropList source, GEvent event) { //_CODE_:modeDropList:5
 } //_CODE_:modeDropList:585678:
 
 public void clickReset(GButton source, GEvent event) { //_CODE_:ResetButton:688049:
-    reset();
+    reset(); //Restarts the game
 } //_CODE_:ResetButton:688049:
 
 public void toggleAnimateTitle(GCheckbox source, GEvent event) { //_CODE_:animateTitleCheck:211146:
-    playAnim = animateTitleCheck.isSelected();
+    playAnim = animateTitleCheck.isSelected(); //Toggles the title animation to play
 } //_CODE_:animateTitleCheck:211146:
 
 public void changeAnimSpeed(GSlider source, GEvent event) { //_CODE_:animSpeedSlider:955392:
-    animSpeed = int(map(100 - source.getValueI(), 100, 0, 11, 1));
+    animSpeed = int(map(100 - source.getValueI(), 100, 0, 11, 1)); //Changes the animation speed of title
 } //_CODE_:animSpeedSlider:955392:
 
-public void changeVolume(GSlider source, GEvent event){
+public void changeVolume(GSlider source, GEvent event){ //Changes the music volume
     for(SoundFile s : sounds)
         s.amp(map(source.getValueF(), 0, 100, 0, 1));
 }
